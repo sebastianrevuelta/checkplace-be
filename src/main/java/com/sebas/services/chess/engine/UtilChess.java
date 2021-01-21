@@ -181,4 +181,51 @@ public class UtilChess {
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
+	
+
+	/**
+	 * 
+	 * @param color
+	 * @param horizontal
+	 * @param vertical
+	 * @param type
+	 * @return
+	 */
+	public static Square createSquare(String colorSquare, String horizontal, String vertical, 
+			String type, String colorPiece, boolean isEmpty) {
+		
+		Square square = new Square();
+		square.setColor(colorSquare);
+		square.setHorizontal(horizontal);
+		square.setVertical(vertical);
+		square.setEmpty(isEmpty);
+		square.setSqid(horizontal+vertical);
+		Piece p = null;
+		if ("tower".equals(type)) p = new Tower();
+		if ("knight".equals(type)) p = new Knight();
+		if ("bishop".equals(type)) p = new Bishop();
+		if ("queen".equals(type)) p = new Queen(colorPiece, horizontal, vertical);
+		if ("king".equals(type)) p = new King();
+		if ("pawn".equals(type)) p = new Pawn();
+		else if (type == null || "".equals(type)) {
+			square.setEmpty(true);
+			square.setPiece(null);
+			square.setImage("");
+			square.setSqid(horizontal+vertical);
+		}
+		
+		if (p != null) {
+			p.setColor(colorPiece);
+			p.setHorizontal(horizontal);
+			p.setVertical(vertical);
+			square.setPiece(p);
+			System.err.println(colorPiece);
+			System.err.println(p.getType());
+			square.setImage("./assets/images/"+p.getType()+colorPiece.charAt(0)+".png");
+		}
+
+
+		
+		return square;
+	}
 }

@@ -18,6 +18,16 @@ public abstract class Piece {
 	
 	protected final static Logger log = Logger.getLogger(Piece.class);
 	
+	protected Piece() {}
+	
+	public Piece(String color, String horizontal, String vertical, String type, int value) {
+		this.color = color;
+		this.horizontal = horizontal;
+		this.vertical = vertical;
+		this.type = type;
+		this.value = value;
+	}
+	
 	public int getValue() { return value; }
 	public final void setValue(int value) { this.value = value; }
 	

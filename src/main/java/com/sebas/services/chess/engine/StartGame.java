@@ -12,7 +12,8 @@ public class StartGame {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Start!");
-		Match match = new Match("white");
+		Match match = new Match();
+		match.setTurn("white");
 		match.startGame();
 	}
 

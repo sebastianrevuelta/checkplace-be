@@ -7,20 +7,24 @@ package com.sebas.services.chess.engine;
  */
 public class Square {
 	
-	private String id;
+	private String sqid;
 	private String color;
 	private String image;
 	private boolean isEmpty;
-	private Piece pieza;
+	private Piece piece;
 	private String horizontal;
 	private String vertical;
 	
 	public boolean isEmpty() { return isEmpty; }
 	public void setEmpty(boolean empty) { this.isEmpty = empty;}
 	
-	public Piece getPieza() { return pieza; }
-	public void setPieza(Piece pieza) { this.pieza = pieza; }
-	
+
+	public Piece getPiece() {
+		return piece;
+	}
+	public void setPiece(Piece piece) {
+		this.piece = piece;
+	}
 	public String getHorizontal() {
 		return horizontal;
 	}
@@ -33,11 +37,12 @@ public class Square {
 	public void setVertical(String vertical) {
 		this.vertical = vertical;
 	}
-	public String getId() {
-		return id;
+
+	public String getSqid() {
+		return sqid;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setSqid(String sqid) {
+		this.sqid = sqid;
 	}
 	public String getColor() {
 		return color;

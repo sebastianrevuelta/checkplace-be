@@ -15,7 +15,7 @@ public class Match {
 	private String turn;
 	private boolean checkmate;
 	private int movement;
-	private String historyMatch;
+	private String history;
 	private String logger;
 	private String player1;
 	private String player2;
@@ -23,13 +23,13 @@ public class Match {
 
 	protected Match() { }
 	
-	Match(Board board, String turn, boolean checkmate, int movement, String historyMatch, 
+	Match(Board board, String turn, boolean checkmate, int movement, String history, 
 			String logger, String player1, String player2, String timer) {
 		this.board = board;
 		this.turn = turn;
 		this.checkmate = checkmate;
 		this.movement = movement;
-		this.historyMatch = historyMatch;
+		this.history = history;
 		this.logger = logger;
 		this.player1 = player1;
 		this.player2 = player2;
@@ -50,21 +50,15 @@ public class Match {
 	public Board getBoard() { return board; }
 	public final void setBoard(Board board) { this.board = board; }
 
-	public String getTurno() { return turn; }
-	public final void setTurno(String turno) { this.turn = turno; }
+	public String getTurn() { return turn; }
+	public final void setTurn(String turn) { this.turn = turn; }
 
-	public String getHistoryMatch() { return historyMatch; }
-	public final void setHistoryMatch(String historyMatch) { this.historyMatch = historyMatch; }
-
-	public Match(String turno) {
-		setBoard(new Board());
-		setTurno(turno);
-		movement = 1;
-		setHistoryMatch("");
-	}
+	public String getHistory() { return history; }
+	public final void setHistory(String history) { this.history = history; }
 
 	public static void main(String[] args) {
-		Match match = new Match("white");
+		Match match = new Match();
+		match.setTurn("white");
 		match.startGame();
 	}
 	/**
@@ -86,8 +80,8 @@ public class Match {
 				result += m.getPiece();
 				//sb.append(m.getPiece());
 				
-				if (turn.equals("white")) setTurno("black");
-				else setTurno("white");
+				if (turn.equals("white")) setTurn("black");
+				else setTurn("white");
 
 				Thread.sleep(TIME_OUT_THINKING);  
 			}
@@ -99,7 +93,30 @@ public class Match {
 			 System.exit(0);
 		}
 	}
+	
+	/**
+	 * updateBoard
+	 * @param m
+	 */
+	public void updateBoard(Movement m) {
+		String origin = m.getOrigin();
+		String destiny = m.getDestiny();
+		
+		int horOrigin = UtilChess.calculateHorizontal(origin); 
+		int verOrigin = UtilChess.calculateVertical(origin);
+		this.getBoard().getSquares()[horOrigin][verOrigin].setEmpty(true);
+		this.getBoard().getSquares()[horOrigin][verOrigin].setImage("");
 
+		int horDestiny = UtilChess.calculateHorizontal(destiny);
+		int verDestiny = UtilChess.calculateVertical(destiny);
+
+		String horizontal = destiny.substring(0,1);
+		String vertical =  destiny.substring(1);
+
+		Square square = UtilChess.createSquare(this.getTurn(),horizontal,vertical, m.getPiece().getType(),m.getPiece().getColor(),false);
+		this.getBoard().getSquares()[horDestiny][verDestiny] = square;
+	}
+	
 	/**
 	 * move!
 	 * @return
@@ -117,30 +134,30 @@ public class Match {
 		board.update(m,turn);
 
 		if ("white".equals(turn)) { 
-			setTurno("black"); 
+			setTurn("black"); 
 			if ("pawn".equals(m.getPiece().getType())) {
-				descriptionMove = getHistoryMatch() + "\n" + movement + "." + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
+				descriptionMove = getHistory() + "\n" + movement + "." + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
 			}
 			else {
-				descriptionMove = getHistoryMatch() + "			" + movement + "." + m.getPiece().getType().toUpperCase().charAt(0) + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
+				descriptionMove = getHistory() + "			" + movement + "." + m.getPiece().getType().toUpperCase().charAt(0) + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
 			}
 		}
 		else { 
-			setTurno("white");
+			setTurn("white");
 			if ("pawn".equals(m.getPiece().getType())) {
-				descriptionMove = getHistoryMatch() + " | " + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
+				descriptionMove = getHistory() + " | " + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
 			}
 			else {
-				descriptionMove = getHistoryMatch() + " | " + m.getPiece().getType().toUpperCase().charAt(0) + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
+				descriptionMove = getHistory() + " | " + m.getPiece().getType().toUpperCase().charAt(0) + m.getDestiny() + " ("+ m.getHeuristicValue() + ")";
 			}
 			movement++;
 		}
-		setHistoryMatch(descriptionMove);
+		setHistory(descriptionMove);
 		if (checkmate) {
 			descriptionMove += "++";
 		}
 
-		return getHistoryMatch();
+		return getHistory();
 	}
 
 }

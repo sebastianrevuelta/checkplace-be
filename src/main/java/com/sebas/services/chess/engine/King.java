@@ -25,7 +25,7 @@ public class King extends Piece {
 		Square square = squares[horizontalTo][verticalTo];
 		
 		if (!square.isEmpty()) {
-			if (turn.equals(square.getPieza().getColor())) {
+			if (turn.equals(square.getPiece().getColor())) {
 				return false;
 			}
 		}

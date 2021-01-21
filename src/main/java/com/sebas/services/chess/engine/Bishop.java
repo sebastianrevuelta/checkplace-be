@@ -86,9 +86,9 @@ public class Bishop extends Piece {
 		while (i.hasNext()) {
 			Square square = i.next();
 			if (!square.isEmpty()) {
-				Piece p = square.getPieza();
+				Piece p = square.getPiece();
 				if (p != null) {
-					if (turn.equals(square.getPieza().getColor())) {
+					if (turn.equals(square.getPiece().getColor())) {
 						return false;
 					}
 					else { //it it different color

@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class Movement { 
 
+	public static String EOL = System.getProperty("line.separator");
 	private Piece piece;
 	private String origin;
 	private String destiny;
@@ -62,7 +63,7 @@ public class Movement {
 		int h = UtilChess.calculateHorizontal(origin);
 		int v = UtilChess.calculateVertical(origin);
 		Square square = squares[h][v];
-		Piece piece = square.getPieza();
+		Piece piece = square.getPiece();
 		this.piece = piece;
 		this.origin = origin;
 		this.destiny = destiny;
@@ -83,7 +84,6 @@ public class Movement {
 		List<Movement> realMoves = filterMoves(board,possiblesMoves,turn);
 		List<Movement> realEvaluatedMoves = evaluatedMoves(board,realMoves,turn);
 		List<Movement> realNextEvaluatedMoves = new ArrayList<Movement>();
-
 		Iterator<Movement> i = realEvaluatedMoves.iterator();
 		while (i.hasNext()) {
 			Movement moveNext = i.next();
@@ -110,7 +110,7 @@ public class Movement {
 		if (move != null) {
 			this.setPiece(move.getPiece());
 			if ("pawn".equals(move.getPiece().getType())) {
-				Queen queen = new Queen(); //TODO: User can choose what they want
+				Queen queen = new Queen(turn,move.getDestiny().substring(0,1),move.getDestiny().substring(1, 2)); //TODO: User can choose what they want
 				queen.setColor(turn);
 				queen.setValue(9);
 				if (move.getDestiny().contains("8") && "white".equals(turn)) {
@@ -120,12 +120,12 @@ public class Movement {
 					this.setPiece(queen);		
 				}
 			}
-
+			
 			this.setOrigin(move.getOrigin());
 			this.setDestiny(move.getDestiny());
 			this.setHeuristicValue(move.getHeuristicValue());
-			this.setDescription("Moving..." + turn + ":" + move.getPiece().getType() + " " + move.getOrigin() 
-			+ "-" + move.getDestiny() + "(" + move.getHeuristicValue() + ")" + " Depth: " + depth);
+			this.setDescription(EOL + move.getPiece().getType() + " " + move.getOrigin() 
+			+ "-" + move.getDestiny() + "(" + move.getHeuristicValue() + ")" + EOL);
 		}
 		return this;
 	}
@@ -152,7 +152,7 @@ public class Movement {
 			for (int j = 0; j < 8; j++) {
 				Square square = squares[i][j];
 				if (!square.isEmpty()){
-					Piece p = square.getPieza();
+					Piece p = square.getPiece();
 					if (p.getColor().equals(turn)) {
 						String from = square.getHorizontal()+square.getVertical();
 						List<Movement> moves = p.move(from,turn,p.getType());
@@ -226,7 +226,7 @@ public class Movement {
 				Square square = squares[i][j];
 				Square newSquare = new Square();
 				newSquare.setEmpty(square.isEmpty());
-				newSquare.setPieza(square.getPieza());
+				newSquare.setPiece(square.getPiece());
 				newSquare.setHorizontal(square.getHorizontal());
 				newSquare.setVertical(square.getVertical());
 				newSquares[i][j] = newSquare;

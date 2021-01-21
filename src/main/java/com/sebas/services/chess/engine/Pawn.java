@@ -21,7 +21,6 @@ public class Pawn extends Piece {
 	 */
 	public List<Movement> move(String from, String turn, String type) {
 
-		log.info(turn + " " + type + " is going to move from: " + from);
 		List<Movement> possiblesMoves = new ArrayList<Movement>();
 		String to;
 
@@ -134,7 +133,7 @@ public class Pawn extends Piece {
 		if (horizontalTo != horizontalFrom) { //it is a lunch
 			Square square = squares[horizontalTo][verticalTo];
 			if (square.isEmpty()) return false;
-			if (square.getPieza().getColor().equals(turn)) return false;
+			if (square.getPiece().getColor().equals(turn)) return false;
 		}
 		else { //normal movement: one step
 			Square square = squares[horizontalTo][verticalTo];

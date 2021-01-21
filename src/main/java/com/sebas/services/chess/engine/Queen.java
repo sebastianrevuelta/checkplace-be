@@ -10,9 +10,12 @@ import java.util.List;
  */
 public class Queen extends Piece {
 	
-	public Queen() {
+	public Queen(String color, String horizontal, String vertical) {
 		 super.setType("queen");
 		 super.setValue(9);
+		 super.setColor(color);
+		 super.setHorizontal(horizontal);
+		 super.setVertical(vertical);
 	}
 	
 	/***
@@ -49,11 +52,9 @@ public class Queen extends Piece {
 		while (i.hasNext()) {
 			Square square = i.next();
 			if (!square.isEmpty()) {
-				Piece p = square.getPieza();
-				if (p != null) {
-					if (turn.equals(square.getPieza().getColor())) {
-						return false;
-					}
+				Piece p = square.getPiece();
+				if (p != null && turn.equals(square.getPiece().getColor())) {
+					return false;
 				}
 			}
 		}

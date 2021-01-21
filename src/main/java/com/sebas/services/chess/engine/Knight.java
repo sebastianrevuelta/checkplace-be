@@ -127,7 +127,7 @@ public class Knight extends Piece {
 		Square[][] squares = board.getSquares();
 		Square square = squares[horizontalTo][verticalTo];
 		if (!square.isEmpty()) {
-			if (turn.equals(square.getPieza().getColor())) return false;
+			if (turn.equals(square.getPiece().getColor())) return false;
 		}
 		
 		return true;
