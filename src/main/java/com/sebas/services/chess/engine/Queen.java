@@ -10,12 +10,9 @@ import java.util.List;
  */
 public class Queen extends Piece {
 	
-	public Queen(String color, String horizontal, String vertical) {
+	public Queen() {
 		 super.setType("queen");
 		 super.setValue(9);
-		 super.setColor(color);
-		 super.setHorizontal(horizontal);
-		 super.setVertical(vertical);
 	}
 	
 	/***

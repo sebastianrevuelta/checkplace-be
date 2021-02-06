@@ -29,7 +29,7 @@ public class Pawn extends Piece {
 
 		int valueRow = UtilChess.calculateVertical(from);
 		int valueCol = UtilChess.calculateHorizontal(from);
-
+		this.setColor(turn);
 		String rowdestiny = "";
 		if ("white".equals(turn)) { 
 			//only one step 

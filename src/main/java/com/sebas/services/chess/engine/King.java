@@ -50,7 +50,7 @@ public class King extends Piece {
 
 		int valueColumn = UtilChess.calculateHorizontal(from);
 		int valueRow = UtilChess.calculateVertical(from);
-
+		this.setColor(turn);
 		if (valueRow+1 < 8) {
 			int row = new Integer(valueRow+1).intValue();
 			rowdestiny = UtilChess.calculateVertical(row);

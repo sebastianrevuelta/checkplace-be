@@ -32,7 +32,7 @@ public class Knight extends Piece {
 
 		int valueColumn = UtilChess.calculateHorizontal(from);
 		int valueRow = UtilChess.calculateVertical(from);
-
+		this.setColor(turn);
 		if (valueRow+2 < 8) {
 			int row = new Integer(valueRow+2).intValue();
 			rowdestiny = UtilChess.calculateVertical(row);

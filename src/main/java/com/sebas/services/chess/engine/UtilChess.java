@@ -7,6 +7,7 @@ package com.sebas.services.chess.engine;
  */
 public class UtilChess {
 
+	
 	/**
 	 * 
 	 * @param coord
@@ -204,7 +205,7 @@ public class UtilChess {
 		if ("tower".equals(type)) p = new Tower();
 		if ("knight".equals(type)) p = new Knight();
 		if ("bishop".equals(type)) p = new Bishop();
-		if ("queen".equals(type)) p = new Queen(colorPiece, horizontal, vertical);
+		if ("queen".equals(type)) p = new Queen();
 		if ("king".equals(type)) p = new King();
 		if ("pawn".equals(type)) p = new Pawn();
 		else if (type == null || "".equals(type)) {
@@ -219,13 +220,54 @@ public class UtilChess {
 			p.setHorizontal(horizontal);
 			p.setVertical(vertical);
 			square.setPiece(p);
-			System.err.println(colorPiece);
-			System.err.println(p.getType());
 			square.setImage("./assets/images/"+p.getType()+colorPiece.charAt(0)+".png");
 		}
 
-
-		
 		return square;
 	}
+	
+	public static Square[][] addPieceToSquares(Square[][] squares) {
+		for (int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				Square square = squares[i][j];
+				String image = square.getImage();
+				Piece p = null;
+				if (image.contains("pawn")) {
+					p = new Pawn();
+				}
+				else if (image.contains("knight")) {
+					p = new Knight();
+				}
+				else if (image.contains("bishop")) {
+					p = new Bishop();
+				}
+				else if (image.contains("tower")) {
+					p = new Tower();
+				}
+				else if (image.contains("queen")) {
+					p = new Queen();
+				}
+				else if (image.contains("king")) {
+					p = new King();
+				}
+
+				if (p != null) {
+					if (image.endsWith("w.png")) {
+						p.setColor("white");
+					}
+					if (image.endsWith("b.png")) { 
+						p.setColor("black");
+					}
+					p.setHorizontal(square.getHorizontal());
+					p.setVertical(square.getVertical());
+					square.setPiece(p);
+				}
+				else {
+					square.setPiece(null);
+				}
+			}
+		}
+		return squares;
+	}
+
 }

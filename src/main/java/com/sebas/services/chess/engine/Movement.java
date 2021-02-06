@@ -81,38 +81,22 @@ public class Movement {
 
 		Movement move;
 		List<Movement> possiblesMoves = getPossiblesMoves(board,turn);
+		System.out.println("turn " + turn);
+		printmoves(possiblesMoves);
 		List<Movement> realMoves = filterMoves(board,possiblesMoves,turn);
 		List<Movement> realEvaluatedMoves = evaluatedMoves(board,realMoves,turn);
-		List<Movement> realNextEvaluatedMoves = new ArrayList<Movement>();
-		Iterator<Movement> i = realEvaluatedMoves.iterator();
-		while (i.hasNext()) {
-			Movement moveNext = i.next();
-			Board nextBoard = copy(board);
-			nextBoard.update(moveNext, turn);
-			
-			String nextTurn;
-			if (turn.equals("white")) nextTurn = "black";
-			else nextTurn = "white";
-			
-			List<Movement> possiblesNextOpMoves = getPossiblesMoves(nextBoard,nextTurn);
-			List<Movement> realNextOpMoves = filterMoves(nextBoard,possiblesNextOpMoves,nextTurn);
-			List<Movement> realNextOpEvaluatedMoves = evaluatedMoves(nextBoard,realNextOpMoves,nextTurn);
-			Movement moveNextOpponent = chooseBestMove(realNextOpEvaluatedMoves);
-			double value = moveNext.getHeuristicValue()-moveNextOpponent.getHeuristicValue();
-			value = UtilChess.round(value,3);
-			moveNext.setHeuristicValue(value);
-			realNextEvaluatedMoves.add(moveNext);
-			
-			turn = nextTurn;
-		}
-		
-		move = chooseBestMove(realNextEvaluatedMoves);
+		System.out.println("realEvaluatedMoves");
+		printmoves(realEvaluatedMoves);
+
+		move = chooseBestMove(realEvaluatedMoves);
 		if (move != null) {
 			this.setPiece(move.getPiece());
 			if ("pawn".equals(move.getPiece().getType())) {
-				Queen queen = new Queen(turn,move.getDestiny().substring(0,1),move.getDestiny().substring(1, 2)); //TODO: User can choose what they want
+				Queen queen = new Queen(); //TODO: User can choose what they want
 				queen.setColor(turn);
 				queen.setValue(9);
+				queen.setHorizontal(move.getDestiny().substring(0,1));
+				queen.setVertical(move.getDestiny().substring(1, 2));
 				if (move.getDestiny().contains("8") && "white".equals(turn)) {
 					this.setPiece(queen);		
 				}
@@ -130,6 +114,15 @@ public class Movement {
 		return this;
 	}
 
+	private void printmoves(List<Movement> moves) {
+		Iterator<Movement> i = moves.iterator();
+		while (i.hasNext()) {
+			Movement move = i.next();
+			System.err.print(move.getPiece().getType() + " " + move.getOrigin() 
+			+ "-" + move.getDestiny() + "(" + move.getHeuristicValue() + ")");
+		}
+		
+	}
 	private Movement evaluateNumberSquares(Board copyBoard, String turn) {
 		copyBoard.update(this, turn);
 		List<Movement> list = getPossiblesMoves(copyBoard,turn);
@@ -245,24 +238,24 @@ public class Movement {
 	private void evaluateMaterial(Board b, String turn) {
 		int value = 0;
 
-/*		b.update(this, turn);
+		b.update(this, turn);
 		Square[][] squares = b.getSquares();
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Square s = squares[i][j];
 				if (!s.isEmpty()) {
-					if (s.getPieza().getColor().equals(turn)) {
-						value += s.getPieza().getValue();
+					if (s.getPiece().getColor().equals(turn)) {
+						value += s.getPiece().getValue();
 					}
 					else {
-						value -= s.getPieza().getValue();
+						value -= s.getPiece().getValue();
 					}
 				}
 			}
 
 		}
-*/		this.setValue(value);
+		this.setValue(value);
 	}
 
 

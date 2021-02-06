@@ -34,7 +34,7 @@ public class Bishop extends Piece {
 
 		int valueColumn = UtilChess.calculateHorizontal(from);
 		int valueRow = UtilChess.calculateVertical(from);
-
+		this.setColor(turn);
 		for (int i=1; i < 8; i++) {
 			if (valueRow+i < 8) {
 				int row = valueRow+i;

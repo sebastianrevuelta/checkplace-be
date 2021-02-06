@@ -23,8 +23,9 @@ public class Match {
 
 	protected Match() { }
 	
-	Match(Board board, String turn, boolean checkmate, int movement, String history, 
+	public Match(Board board, String turn, boolean checkmate, int movement, String history, 
 			String logger, String player1, String player2, String timer) {
+
 		this.board = board;
 		this.turn = turn;
 		this.checkmate = checkmate;
@@ -55,6 +56,9 @@ public class Match {
 
 	public String getHistory() { return history; }
 	public final void setHistory(String history) { this.history = history; }
+
+	public int getMovement() { return movement; }
+	public void setMovement(int movement) { this.movement = movement; }
 
 	public static void main(String[] args) {
 		Match match = new Match();
@@ -110,11 +114,11 @@ public class Match {
 		int horDestiny = UtilChess.calculateHorizontal(destiny);
 		int verDestiny = UtilChess.calculateVertical(destiny);
 
-		String horizontal = destiny.substring(0,1);
-		String vertical =  destiny.substring(1);
+		this.getBoard().getSquares()[horDestiny][verDestiny].setEmpty(false);
+		this.getBoard().getSquares()[horDestiny][verDestiny].setPiece(m.getPiece());
+		String image = "./assets/images/"+m.getPiece().getType()+m.getPiece().getColor().charAt(0)+".png";
+		this.getBoard().getSquares()[horDestiny][verDestiny].setImage(image);
 
-		Square square = UtilChess.createSquare(this.getTurn(),horizontal,vertical, m.getPiece().getType(),m.getPiece().getColor(),false);
-		this.getBoard().getSquares()[horDestiny][verDestiny] = square;
 	}
 	
 	/**

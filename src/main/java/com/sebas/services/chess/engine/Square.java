@@ -10,13 +10,13 @@ public class Square {
 	private String sqid;
 	private String color;
 	private String image;
-	private boolean isEmpty;
+	private boolean empty;
 	private Piece piece;
 	private String horizontal;
 	private String vertical;
 	
-	public boolean isEmpty() { return isEmpty; }
-	public void setEmpty(boolean empty) { this.isEmpty = empty;}
+	public boolean isEmpty() { return empty; }
+	public void setEmpty(boolean empty) { this.empty = empty;}
 	
 
 	public Piece getPiece() {
