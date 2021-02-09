@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+
+  checkplace-be:
+    image: checkplace-be:1.0
+    container_name: checkplace-be
+    ports: 
+      - 8099:8080
+ 
+  checkplace-fe:
+    image: checkplace-fe:1.0
+    container_name: checkplace-fe
+    ports: 
+      - 4200:4200
+
