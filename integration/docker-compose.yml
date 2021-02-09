@@ -11,5 +11,5 @@ services:
     image: checkplace-fe:1.0
     container_name: checkplace-fe
     ports: 
-      - 4200:4200
+      - 4200:80
 
