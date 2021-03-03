@@ -8,7 +8,7 @@ services:
       - 8099:8080
  
   checkplace-fe:
-    image: checkplace-fe:1.0
+    image: checkplace-fe:1.4
     container_name: checkplace-fe
     ports: 
       - 4200:80
