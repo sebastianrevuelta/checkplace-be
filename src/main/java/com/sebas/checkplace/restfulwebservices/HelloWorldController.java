@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sebas.checkplace.restfulwebservices.helloworld.HelloWorldBean;
 
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin(origins="*")
 @RestController
 public class HelloWorldController {
 
