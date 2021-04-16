@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: checkplace-be-pod
+  labels:
+    name: checkplace-be
+    app: checkplace
+    tier: backend
+spec:
+    containers:
+      - name: checkplace-be
+        image: sebastianrevuelta/checkplace-be:3.1
+        imagePullPolicy: Always
+        env:
+          - name: JAVA_TOOL_OPTIONS
+            value: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
+          - name: MARIADB_HOST
+            value: 192.168.99.100
+          - name: MARIADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-root-credentials
+                key: username
+          - name: MARIADB_PASS
+            valueFrom:
+                secretKeyRef:
+                  name: mariadb-root-credentials
+                  key: password
+          - name: MARIADB_PORT
+            value: "30009"
+        ports:
+          - containerPort: 8099

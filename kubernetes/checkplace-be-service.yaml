@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkplace-be-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8099
+      targetPort: 8099
+      nodePort: 30008
+  selector:
+    name: checkplace-be
+    app: checkplace
+    tier: backend

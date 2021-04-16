@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9042
+      targetPort: 9042
+  selector:
+    name: cassandra
+    app: checkplace
+    tier: data

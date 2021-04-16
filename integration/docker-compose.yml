@@ -9,16 +9,22 @@ services:
     ports: 
       - 8099:8080
       - 5005:5005
+    networks:
+      - backend
+      - data
  
   checkplace-fe:
     image: checkplace-fe:1.4
     container_name: checkplace-fe
     ports: 
       - 4200:80
+    networks:
+      - frontend
+      - data
 
   mariadb:
      image: mariadb:10.5.8
-     container_name: mariadb
+     container_name: mariadb_checkplace
      env_file:
        - ./db/mariadb.env
      deploy:
@@ -32,4 +38,65 @@ services:
      volumes:
        - ${pwd}/mariadbdata:/var/lib/mysql
        - ./db/schemas.sql:/docker-entrypoint-initdb.d/schemas.sql:ro
+     networks:
+       - data
 
+  cassandra_matches:
+    image: cassandra:3.0.23
+    container_name: cassandra_matches
+    environment:
+      CURRENT_NODE_HOSTNAME: "{{.Node.Hostname}}"
+      SEEDER_NODE_HOSTNAME: "{{.Node.Hostname}}"
+      SERVICE_NAME: "cassandra_matches"
+    networks:
+      - data
+    volumes:
+      - type: bind
+        source: ./db/cassandra-start.sh
+        target: /cassandra-start.sh
+        read_only: true
+      - type: volume
+        source: cassandra
+        target: /var/lib/cassandra
+    entrypoint: /cassandra-start.sh
+    deploy:
+      endpoint_mode: dnsrr  # Cassandra doesn't play well with VIPs
+      placement:
+        max_replicas_per_node: 1  # To be able to have a single, static seeder node
+      resources:
+        limits:
+          cpus: '3'
+          memory: 15g
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  populate_cassandra:
+    image: checkplace-matches:1.0
+    environment:
+      CASSANDRA_CONTACT_POINT_HOST: catalogue-matches
+      CASSANDRA_CONTACT_POINT_PORT: 9042
+      CASSANDRA_KEYSPACE: checkplace_keyspace
+    networks:
+      - data
+
+
+volumes:
+  mariadbdata:
+  cassandra:
+
+networks:
+  backend:
+    name: backend
+    driver: overlay
+    attachable: true
+  frontend:
+    name: frontend
+    driver: overlay
+    attachable: true
+  data:
+    name: data
+    driver: overlay
+    attachable: true

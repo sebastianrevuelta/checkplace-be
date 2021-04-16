@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  labels:
+    app: checkplace
+    service: mariadb
+spec:
+  replicas: 1  # NOTE: Not yet ready to be clustered
+  selector:
+    matchLabels:
+      app: checkplace
+      service: mariadb
+  serviceName: mariadb
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "host-local"
+      resources:
+        requests:
+          storage: 5Gi
+  template:
+    metadata:
+      labels:
+        app: checkplace
+        service: mariadb
+        network/data: "true"
+    spec:
+      volumes:
+      - name: schemas
+        configMap:
+          name: mariadb-schemas
+      containers:
+      - name: mariadb
+        image: mariadb:10.5.8
+        args: ['--innodb-flush-method=fsync']
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+        - name: schemas
+          subPath: schemas.sql
+          readOnly: true
+          mountPath: /docker-entrypoint-initdb.d/schemas.sql
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-root-credentials
+              key: password

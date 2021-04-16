@@ -1,0 +1,7 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mariadb-schemas
+data:
+  schemas.sql: |
+    CREATE DATABASE /*!32312 IF NOT EXISTS*/ `checkplace` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;

@@ -28,7 +28,7 @@ public class PlayerJpaController {
 	public List<Player> getPlayers() {
 		return playerJpaRepo.findAll();
 	}
-	
+
 	@GetMapping(path = "/jpa/players/{id}")
 	public Player getPlayer(@PathVariable Long id) {
 		return playerJpaRepo.findById(id).get();

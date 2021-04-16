@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: checkplace-fe-pod
+  labels:
+    name: checkplace-fe
+    app: checkplace
+    tier: frontend
+spec:
+    containers:
+      - name: checkplace-fe
+        image: sebastianrevuelta/checkplace-fe:3.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80

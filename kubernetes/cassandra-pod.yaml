@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cassandra-pod
+  labels:
+    name: cassandra
+    app: checkplace
+    tier: data
+spec:
+  containers:
+    - name: cassandra
+      image: cassandra:3.0.23
+      imagePullPolicy: Never
+      ports:
+        containerPort: 9042
+      env:
+        - name: CURRENT_NODE_HOSTNAME
+          value: "{{.Node.Hostname}}"
+        - name: SEEDER_NODE_HOSTNAME
+          value: "{{.Node.Hostname}}"
+        - name: SERVICE_NAME
+          value: cassandra_matches
