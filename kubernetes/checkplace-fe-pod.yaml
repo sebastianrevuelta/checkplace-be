@@ -5,11 +5,15 @@ metadata:
   labels:
     name: checkplace-fe
     app: checkplace
-    tier: frontend
 spec:
     containers:
       - name: checkplace-fe
         image: sebastianrevuelta/checkplace-fe:3.1
         imagePullPolicy: Always
+        env:
+          - name: BACKEND_HOST
+            value: "192.168.99.100"
+          - name: BACKEND_PORT
+            value: "30008"
         ports:
           - containerPort: 80

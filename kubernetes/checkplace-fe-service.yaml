@@ -11,4 +11,3 @@ spec:
   selector:
     name: checkplace-fe
     app: checkplace
-    tier: frontend

@@ -5,7 +5,6 @@ metadata:
   labels:
     name: checkplace-be
     app: checkplace
-    tier: backend
 spec:
     containers:
       - name: checkplace-be
@@ -15,7 +14,7 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
           - name: MARIADB_HOST
-            value: 192.168.99.100
+            value: "mariadb"
           - name: MARIADB_USER
             valueFrom:
               secretKeyRef:
@@ -27,6 +26,6 @@ spec:
                   name: mariadb-root-credentials
                   key: password
           - name: MARIADB_PORT
-            value: "30009"
+            value: "3306"
         ports:
           - containerPort: 8099

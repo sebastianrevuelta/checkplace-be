@@ -37,7 +37,7 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Reading users from database");
         List<JwtUserDetails> inMemoryUserListFromDB = UtilDB.getUsersFromDB();
-        logger.info("Reading" + inMemoryUserListFromDB.size() + " users");
+        logger.info("Reading " + inMemoryUserListFromDB.size() + " users");
 
         Optional<JwtUserDetails> findFirst = inMemoryUserListFromDB.stream()
                 .filter(user -> user.getUsername().equals(username)).findFirst();

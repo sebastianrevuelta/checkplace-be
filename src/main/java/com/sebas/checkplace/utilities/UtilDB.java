@@ -1,6 +1,8 @@
 package com.sebas.checkplace.utilities;
 
 import com.sebas.checkplace.restfulwebservices.jwt.JwtUserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +13,8 @@ import java.util.List;
 
 public class UtilDB {
 
+    private static final Logger logger = LoggerFactory.getLogger(UtilDB.class);
+
     public static List<JwtUserDetails> getUsersFromDB() {
 
         List<JwtUserDetails> users = new ArrayList<JwtUserDetails>();
@@ -20,7 +24,7 @@ public class UtilDB {
         Statement stmt = null;
         String hostDB = System.getenv("MARIADB_HOST");
         String portDB = System.getenv("MARIADB_PORT");
-        String user = System.getenv("MARIADB_USER");
+        String username = System.getenv("MARIADB_USER");
         String password = System.getenv("MARIADB_PASS");
 
         String database = "checkplace";
@@ -29,7 +33,12 @@ public class UtilDB {
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionChain, user, password);
+
+            logger.info("Connecting to database: " + database);
+            logger.info("user: " + username);
+            logger.info("pwd: " + password);
+
+            conn = DriverManager.getConnection(connectionChain, username, password);
             stmt = conn.createStatement();
 
             //SQL injection. No validation of malicious input
@@ -38,9 +47,9 @@ public class UtilDB {
             List<String> list = new ArrayList<String>();
             while (rs.next()) {
                 long id = rs.getRow();
-                String username = rs.getString("username");
+                String user = rs.getString("username");
                 String pass = rs.getString("password");
-                users.add(new JwtUserDetails(id, username,
+                users.add(new JwtUserDetails(id, user,
                         pass, "ROLE_USER_1"));
             }
         } catch (Exception e) {
