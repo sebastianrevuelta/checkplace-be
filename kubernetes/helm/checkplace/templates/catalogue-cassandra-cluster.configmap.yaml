@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue-cassandra-cluster
+data:
+  entrypoint.sh: |
+    #!/usr/bin/env sh
+
+    ######################################################################
+    # Gets this pod's fully qualified domain name (FQDN)
+    ######################################################################
+
+    THIS_POD_FQDN=$(hostname --fqdn)
+    if [ $? -ne 0 ]; then
+        echo "Unable to get this pod's FQDN"
+        exit 1
+    fi
+    echo "This pod's FQDN: $THIS_POD_FQDN"
+
+    ######################################################################
+    # Determines the cluster seeder's FQDN
+    # We choose to have only one seeder, and for it to be pod number zero
+    ######################################################################
+
+    #
+    # Replaces the number in the current pod's FQDN with a zero
+    # e.g.: `mypod-123.whatever` -> `mypod-0.whatever`
+    #
+    SEEDER_POD_FQDN=$(echo "$THIS_POD_FQDN" | sed s/-[0-9]\*\\./-0\\./)
+    if [ $? -ne 0 ]; then
+        echo "Unable to determine seeder pod FQDN"
+        exit 1
+    fi
+    echo "Seeder pod FQDN: $SEEDER_POD_FQDN"
+
+    ######################################################################
+    # Seeder address is sent to Cassandra via CASSANDRA_SEEDS
+    ######################################################################
+
+    export CASSANDRA_SEEDS="$SEEDER_POD_FQDN"
+
+    if [ "$THIS_POD_FQDN" = "$SEEDER_POD_FQDN" ]; then
+        echo "This node is the cluster seeder"
+    else
+        echo "This node is a leecher"
+    fi
+
+    ######################################################################
+    # Runs Cassandra
+    ######################################################################
+    /docker-entrypoint.sh

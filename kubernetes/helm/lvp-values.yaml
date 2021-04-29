@@ -1,0 +1,6 @@
+classes:
+- name: host-local
+  hostDir: "/mnt/k8s"
+  volumeMode: Filesystem
+  storageClass:
+    reclaimPolicy: Retain

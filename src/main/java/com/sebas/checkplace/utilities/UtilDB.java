@@ -41,7 +41,6 @@ public class UtilDB {
             conn = DriverManager.getConnection(connectionChain, username, password);
             stmt = conn.createStatement();
 
-            //SQL injection. No validation of malicious input
             ResultSet rs = stmt.executeQuery(query);
 
             List<String> list = new ArrayList<String>();

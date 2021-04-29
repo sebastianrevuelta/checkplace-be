@@ -26,6 +26,7 @@ spec:
       labels:
         app: checkplace
         service: mariadb
+        network/data: "true"
     spec:
       volumes:
       - name: schemas

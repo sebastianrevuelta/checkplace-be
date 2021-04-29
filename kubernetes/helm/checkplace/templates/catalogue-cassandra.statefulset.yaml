@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: catalogue-cassandra
+  labels:
+    app: checkplace
+    service: catalogue-cassandra
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+        app: checkplace
+        service: catalogue-cassandra
+  serviceName: catalogue-cassandra
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "host-local"
+      resources:
+        requests:
+          storage: 2Gi
+  template:
+    metadata:
+      labels:
+        app: checkplace
+        service: catalogue-cassandra
+        network/data: "true"
+    spec:
+      volumes:
+      - name: cluster-configmap
+        configMap:
+          name: catalogue-cassandra-cluster
+          defaultMode: 0777
+      containers:
+      - name: catalogue-cassandra
+        image: cassandra:3.11
+        command: ["/cluster_entrypoint.sh"]
+        lifecycle:
+          preStop:
+            exec:
+              command: ["bash", "-c", "nodetool decommission"]
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command: ["bash", "-c", "nodetool status"]
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          exec:
+            command:
+            - "bash"
+            - "-c"
+            - |
+              nodetool status | grep -E "^UN\\s+${POD_IP}"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/cassandra
+        - name: cluster-configmap
+          subPath: entrypoint.sh
+          mountPath: /cluster_entrypoint.sh
+        ports:
+        - name: cql
+          containerPort: 9042
+        - name: gossip
+          containerPort: 7000
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
