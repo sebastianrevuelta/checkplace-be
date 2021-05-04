@@ -14,18 +14,12 @@ spec:
           - name: JAVA_TOOL_OPTIONS
             value: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
           - name: MARIADB_HOST
-            value: "mariadb"
-          - name: MARIADB_USER
-            valueFrom:
-              secretKeyRef:
-                name: mariadb-root-credentials
-                key: username
-          - name: MARIADB_PASS
-            valueFrom:
-                secretKeyRef:
-                  name: mariadb-root-credentials
-                  key: password
+            value: "192.168.49.2"
           - name: MARIADB_PORT
-            value: "3306"
+            value: "30006"
+          - name: MARIADB_USER
+            value: "root"
+          - name: MARIADB_PASS
+            value: "capablanca"
         ports:
           - containerPort: 8099

@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: mariadb
 spec:
-  selector:
-    app: checkplace
-    service: mariadb
+  type: NodePort
   ports:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+      nodePort: 30006
+  selector:
+    name: mariadb-pod
+    app: checkplace
