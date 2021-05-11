@@ -1,25 +1,35 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: checkplace-be-pod
+  name: checkplace-be-deployment
   labels:
-    name: checkplace-be
     app: checkplace
 spec:
-    containers:
-      - name: checkplace-be
-        image: sebastianrevuelta/checkplace-be:3.1
-        imagePullPolicy: Always
-        env:
-          - name: JAVA_TOOL_OPTIONS
-            value: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
-          - name: MARIADB_HOST
-            value: "192.168.49.2"
-          - name: MARIADB_PORT
-            value: "30006"
-          - name: MARIADB_USER
-            value: "root"
-          - name: MARIADB_PASS
-            value: "capablanca"
-        ports:
-          - containerPort: 8099
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkplace
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: checkplace
+        tier: backend
+    spec:
+      containers:
+        - name: checkplace-be-pod
+          image: sebastianrevuelta/checkplace-be:3.1
+          imagePullPolicy: Always
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
+            - name: MARIADB_HOST
+              value: "mariadb-service"
+            - name: MARIADB_PORT
+              value: "3306"
+            - name: MARIADB_USER
+              value: "root"
+            - name: MARIADB_PASS
+              value: "capablanca"
+          ports:
+            - containerPort: 8099
