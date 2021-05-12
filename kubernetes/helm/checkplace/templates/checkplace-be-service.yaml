@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: checkplace-be-service
+  namespace: checkplace
 spec:
   type: NodePort
   ports:
@@ -9,5 +10,4 @@ spec:
       targetPort: 8099
       nodePort: 30008
   selector:
-    tier: backend
-    app: checkplace
+    name: checkplace-be-pod
