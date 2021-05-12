@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: checkplace-be-deployment
+  name: checkplace-be-pod
+  namespace: checkplace
   labels:
-    app: checkplace
+    name: checkplace-be-pod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: checkplace
-      tier: backend
+      name: checkplace-be-pod
   template:
     metadata:
       labels:
-        app: checkplace
-        tier: backend
+        name: checkplace-be-pod
     spec:
       containers:
         - name: checkplace-be-pod

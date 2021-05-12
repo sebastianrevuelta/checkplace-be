@@ -24,7 +24,9 @@ if ! helm install \
 	-f "$SCRIPT_DIR_PATH/lvp-values.yaml" \
 	local-volume-provisioner \
 	"$PROVISIONER_SOURCES_DIR_PATH/helm/provisioner" \
-	; then
+        --create-namespace \
+        --namespace checkplace \
+        ; then
 
 	>&2 echo "Unable to install the Local Volume Provisioner into the K8S cluster using Helm"
 	exit 1

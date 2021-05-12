@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mariadb-deployment
+  name: mariadb-pod
+  namespace: checkplace
   labels:
-    app: checkplace
+    name: mariadb-pod
 spec:
   replicas: 1
   selector:
     matchLabels:
-      tier: data
-      app: checkplace
+      name: mariadb-pod
   template:
     metadata:
       name: mariadb-pod
       labels:
-        tier: data
-        app: checkplace
+        name: mariadb-pod
     spec:
       containers:
         - image: sebastianrevuelta/mariadb:10.6.1
