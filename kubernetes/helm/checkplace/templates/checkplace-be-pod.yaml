@@ -32,3 +32,7 @@ spec:
               value: "capablanca"
           ports:
             - containerPort: 8099
+          #securityContext:
+          #  runAsUser: 1000
+          #  runAsGroup: 3000
+

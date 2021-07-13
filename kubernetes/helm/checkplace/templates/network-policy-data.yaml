@@ -1,22 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: data-network-policy
-  namespace: checkplace
+  name: default-deny-ingress
 spec:
+  podSelector: {}
   policyTypes:
-    - Ingress
-  podSelector:
-    matchLabels:
-      name: mariadb-pod
-  ingress:
-    - from:
-        - podSelector:
-            matchLabels:
-              name: checkplace-be-pod
-      ports:
-        - port: 3306
-          protocol: TCP
+  - Ingress
 #apiVersion: "cilium.io/v2"
 #kind: CiliumNetworkPolicy
 #metadata:
