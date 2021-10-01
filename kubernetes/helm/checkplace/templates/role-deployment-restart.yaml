@@ -1,0 +1,13 @@
+# allow getting status and patching only the one deployment you want
+# to restart
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-restart
+  namespace: checkplace
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["checkplace-be-pod"]
+    verbs: ["get", "patch", "list", "watch"] # "list" and "watch" are only needed
+    # if you want to use `rollout status`
