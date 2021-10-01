@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: check-license-loop-pod
+  namespace: checkplace
+  labels:
+    name: check-license-loop-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: check-license-loop-pod
+  template:
+    metadata:
+      name: check-license-loop-pod
+      labels:
+        name: check-license-loop-pod
+    spec:
+      containers:
+        - image: sebastianrevuelta/check-license-loop:0.0.4
+          name: check-license-loop-pod
+          resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+status: {}

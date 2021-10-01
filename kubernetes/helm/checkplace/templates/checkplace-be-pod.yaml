@@ -4,6 +4,7 @@ metadata:
   name: checkplace-be-pod
   namespace: checkplace
   labels:
+    app: checkplace
     name: checkplace-be-pod
 spec:
   replicas: 1
@@ -15,6 +16,9 @@ spec:
       labels:
         name: checkplace-be-pod
     spec:
+      initContainers:
+      - name: init-check-license-service
+        image: sebastianrevuelta/check-license:0.0.4
       containers:
         - name: checkplace-be-pod
           image: sebastianrevuelta/checkplace-be:3.1
