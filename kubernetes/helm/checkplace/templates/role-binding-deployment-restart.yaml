@@ -1,14 +1,12 @@
-# bind the role to the service account
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deployment-restart
+  name: deleting-pods
   namespace: checkplace
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: deployment-restart
+  name: deleting-pods
 subjects:
   - kind: ServiceAccount
-    name: deployment-restart
-    namespace: checkplace
+    name: deleting-pods
