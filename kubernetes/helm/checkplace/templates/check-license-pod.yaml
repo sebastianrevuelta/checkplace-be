@@ -17,9 +17,9 @@ spec:
         name: check-license-loop-pod
     spec:
       containers:
-        - image: sebastianrevuelta/check-license-loop:0.0.4
+        - image: sebastianrevuelta/check-license-loop:0.0.13
           name: check-license-loop-pod
           resources: {}
-      dnsPolicy: ClusterFirst
+      dnsPolicy: Default
       restartPolicy: Always
 status: {}

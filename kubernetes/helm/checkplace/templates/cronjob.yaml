@@ -1,32 +1,31 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: deployment-restart
+  name: deleting-pod
   namespace: checkplace
 spec:
   concurrencyPolicy: Forbid
-  schedule: '0 14 * * *' # cron spec of time, here, 14:00 o'clock
+  schedule: "*/2 * * * *" # At minute 0 past every hour, chage it.
   jobTemplate:
     spec:
-      backoffLimit: 2 # this has very low chance of failing, as all this does
-        # is prompt kubernetes to schedule new replica set for
-      # the deployment
-      activeDeadlineSeconds: 600 # timeout, makes most sense with
-      # "waiting for rollout" variant specified below
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
       template:
         spec:
-          serviceAccountName: deployment-restart # name of the service
-          # account configured above
+          serviceAccountName: deleting-pods
           restartPolicy: Never
           containers:
             - name: kubectl
-              image: bitnami/kubectl # probably any kubectl image will do,
-                # optionaly specify version, but this
-                # should not be necessary, as long the
-                # version of kubectl is new enough to
-              # have `rollout restart`
+              image: bitnami/kubectl #kubectl config --kubeconfig=minikube set-cluster minikube
               command:
                 - 'kubectl'
-                - 'rollout'
-                - 'restart'
-                - 'deployment/checkplace-be-pod'
+                - 'config'
+                - 'view'
+                #- 'delete'
+                #- 'pods'
+                #- '-l'
+                #- 'name=check-license-loop-pod'
+                #- '-n'
+                #- 'checkplace'
+                #- '--force'
+                #- '--grace-period=0'# kubectl apply -f cron-job.yaml
