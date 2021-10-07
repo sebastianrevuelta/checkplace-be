@@ -1,0 +1,25 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: deleting-pod
+  namespace: checkplace
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/5 * * * *" #
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: deleting-pods
+          restartPolicy: Never
+          containers:
+            - image: bitnami/kubectl
+              name: kubelet
+              tty: true
+              securityContext:
+                privileged: true
+              command: [ "/bin/sh","-c" ]
+              args: [ "kubectl rollout restart deployment/checkplace-be-pod -n checkplace" ]
+              ## It throws an error: Unable to connect to the server: dial tcp 10.96.0.1:443: connect: no route to host
