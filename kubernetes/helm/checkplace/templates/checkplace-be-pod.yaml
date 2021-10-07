@@ -18,7 +18,10 @@ spec:
     spec:
       initContainers:
       - name: init-check-license-service
-        image: sebastianrevuelta/check-license:0.0.13
+        image: sebastianrevuelta/check-license:0.0.25
+        imagePullPolicy: IfNotPresent
+        resources: {}
+      dnsPolicy: Default
       containers:
         - name: checkplace-be-pod
           image: sebastianrevuelta/checkplace-be:3.1

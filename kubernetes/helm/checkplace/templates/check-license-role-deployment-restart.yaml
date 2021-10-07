@@ -5,5 +5,5 @@ metadata:
   namespace: checkplace
 rules:
   - apiGroups: [""]
-    resources: ["pods"]
+    resources: ["pods","deployments"]
     verbs: ["get", "patch", "list", "watch", "delete"]
