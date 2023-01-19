@@ -270,4 +270,9 @@ public class UtilChess {
 		return squares;
 	}
 
+    public static String cleanURL(StringBuffer requestURL) {
+		if (requestURL == null) return null;
+		if (!requestURL.toString().startsWith("http")) return null;
+		return requestURL.toString();
+     }
 }

@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sebas.services.chess.engine.UtilChess;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,9 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        logger.info("Authentication Request For '{}'", request.getRequestURL());
+
+        final String urlRequested = UtilChess.cleanURL(request.getRequestURL());
+        logger.info("Authentication Request For '{}'", urlRequested);
 
         final String requestTokenHeader = request.getHeader(this.tokenHeader);
         logger.info("requestTokenHeader '{}'", requestTokenHeader);
