@@ -1,5 +1,8 @@
 package com.sebas.services.chess.engine;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Utility class
  * @author srevuelta
@@ -275,4 +278,13 @@ public class UtilChess {
 		if (!requestURL.toString().startsWith("http")) return null;
 		return requestURL.toString();
      }
+
+	public static String cleanToken(String requestTokenHeader) {
+		if (requestTokenHeader == null) return null;
+		String regex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(requestTokenHeader);
+		if (matcher.matches()) return requestTokenHeader;
+		return null;
+	}
 }
