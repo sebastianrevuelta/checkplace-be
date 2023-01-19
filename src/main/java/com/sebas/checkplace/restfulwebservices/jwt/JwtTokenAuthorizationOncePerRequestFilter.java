@@ -43,7 +43,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         logger.info("Authentication Request For '{}'", urlRequested);
 
         final String requestTokenHeader = request.getHeader(this.tokenHeader);
-        logger.info("requestTokenHeader '{}'", requestTokenHeader);
+        final String tokenCleaned = UtilChess.cleanToken(requestTokenHeader);
+        logger.info("requestTokenHeader '{}'", tokenCleaned);
         String username = null;
         String jwtToken = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
