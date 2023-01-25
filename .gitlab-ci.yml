@@ -1,0 +1,10 @@
+semgrep:
+  image: returntocorp/semgrep
+  script: semgrep ci
+  
+  variables:
+    
+    SEMGREP_APP_TOKEN: $SEMGREP_APP_TOKEN
+  
+  # Setup inline MR comments:
+  # https://semgrep.dev/docs/semgrep-app/notifications/#enabling-gitlab-merge-request-comments
