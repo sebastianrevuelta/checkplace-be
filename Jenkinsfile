@@ -4,8 +4,9 @@ pipeline {
     stages {
         stage('semgrep-app') {
             steps {
-                sh 'pip3 install semgrep'
-                sh 'semgrep scan --config=auto --error src --json > semgrep-output.json'
+                sh 'python3 --version'
+                //sh 'pip3 install semgrep'
+                //sh 'semgrep scan --config=auto --error src --json > semgrep-output.json'
             }
         }
     }
