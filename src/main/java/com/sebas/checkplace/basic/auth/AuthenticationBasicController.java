@@ -10,6 +10,6 @@ public class AuthenticationBasicController {
 
 	@GetMapping(path = "/basicauth")
 	public AuthenticationBean authentication() {
-		return new AuthenticationBean("You are authenticated");
+	  return new AuthenticationBean("You are authenticated");
 	}
 }
