@@ -1,12 +1,10 @@
 /* Requires the Docker Pipeline plugin */
 pipeline {
-    agent { docker { image 'python:3.9-bullseye' } }
+    agent { docker { image 'returntocorp/semgrep' } }
     stages {
-        stage('semgrep-app') {
+        stage('semgrep') {
             steps {
-                sh 'python3 --version'
-                //sh 'pip3 install semgrep'
-                //sh 'semgrep scan --config=auto --error src --json > semgrep-output.json'
+                sh 'semgrep ci'
             }
         }
     }
