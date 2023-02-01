@@ -13,6 +13,6 @@ public class AuthenticationBean {
 	}
 
 	public AuthenticationBean(String message) {
-          this.message = message;
+      this.message = message;
 	}
 }
