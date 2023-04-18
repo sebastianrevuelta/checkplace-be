@@ -1,22 +1,18 @@
-name: "Semgrep"
-
 on:
+  pull_request: {}
   push:
-    branches: [ main ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ main ]
-  schedule:
-    - cron: '39 12 * * 6'
-      
+    branches:
+    - master
+    paths:
+    - .github/workflows/semgrep.yml
+name: Semgrep
 jobs:
   semgrep:
     name: Scan
-    runs-on: ubuntu-20.04
-    env:
-      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-    container:
-      image: returntocorp/semgrep
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.event.comment.body != '/pants'
     steps:
     - uses: actions/checkout@v3
-    - run: semgrep ci --include 'src/main/java/com/sebas/services/chess/engine/**'
+    - uses: returntocorp/semgrep-action@v1
+      with:
+        publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
