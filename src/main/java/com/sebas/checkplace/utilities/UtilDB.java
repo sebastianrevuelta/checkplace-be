@@ -55,10 +55,10 @@ public class UtilDB {
             e.printStackTrace(); //Bad practice
         } finally {
             try {
-                stmt.close();
-                conn.close();
+              stmt.close();
+              conn.close();
             } catch (Exception e) {
-                e.printStackTrace(); //Bad practice
+              e.printStackTrace(); //Bad practice
             }
         }
         return users;
